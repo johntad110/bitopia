@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 
-export function WebApp() {
+function WebApp() {
   const { user, webApp } = useTelegram();
   const [points, setPoints] = useState(5000);
   const [taps, setTaps] = useState<any>([]);
