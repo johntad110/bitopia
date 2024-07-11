@@ -44,4 +44,5 @@ export interface IWebApp {
         isActive: boolean;
     };
     HapticFeedback: any;
+    openTelegramLink: Function;
 }
