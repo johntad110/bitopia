@@ -15,7 +15,7 @@ const WebAppp = () => {
                     User data:
                     <pre>{JSON.stringify(user, null, 2)}</pre>
                     Entire Web App data:
-                    <pre>{JSON.stringify(webApp, null, 2)}</pre>
+                    <pre className="text-wrap">{JSON.stringify(webApp, null, 2)}</pre>
                 </div>
             ) : (
                 <main className="flex min-h-screen flex-col items-center justify-between p-24">
