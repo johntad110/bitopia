@@ -3,13 +3,13 @@ import Image from "next/image";
 
 const WebAppp = () => {
     const { user, webApp } = useTelegram();
-    console.log(user);
+    console.log('User', user);
 
     return (
         <div>
             {user ? (
                 <div
-                    className="fixed left-0 top-0 flex w-full justify-center items-center border border-gray-100 bg-gradient-to-b from-pink-400 p-4 m-8 backdrop-blur-2xl"
+                    className="flex flex-wrap w-full justify-center items-center border border-gray-100 bg-gradient-to-b from-pink-400/30 p-4 m-8 backdrop-blur-2xl"
                 >
                     <h1>Welcome {user?.username}</h1>
                     User data:
