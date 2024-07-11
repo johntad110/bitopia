@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 
-export default function Home() {
+export function WebApp() {
   const { user, webApp } = useTelegram();
   const [points, setPoints] = useState(5000);
   const [taps, setTaps] = useState<any>([]);
@@ -24,9 +24,8 @@ export default function Home() {
   }
 
   return (
-    <TelegramProvider>
+    <div>
       {user ? (
-
         <main className=" min-h-screen flex flex-col items-center justify-between p-2">
           {/* Top Bar */}
           <div className="w-full p-1 mt-2 flex flex-col justify-between gap-10 border-2 border-white dark:border-gray-500 rounded-xl">
@@ -146,6 +145,14 @@ export default function Home() {
           </div>
         </main>
       )}
-    </TelegramProvider>
+    </div>
   );
+}
+
+export default function Home() {
+  return (
+    <TelegramProvider>
+      <WebApp />
+    </TelegramProvider>
+  )
 }
