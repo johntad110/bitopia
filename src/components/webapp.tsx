@@ -9,7 +9,7 @@ const WebAppp = () => {
         <div>
             {user ? (
                 <div
-                    className="flex flex-wrap w-full justify-center items-center border border-gray-100 bg-gradient-to-b from-pink-400/30 p-4 m-8 backdrop-blur-2xl"
+                    className="flex flex-wrap w-full justify-center items-center border border-gray-100 bg-gradient-to-b from-pink-400/30 p-1 m-1 backdrop-blur-2xl"
                 >
                     <h1>Welcome {user?.username}</h1>
                     User data:
