@@ -54,7 +54,7 @@ function WebApp() {
 
   useEffect(() => {
     fetchUserData()
-  }, [])
+  }, [user])
 
 
   return (
