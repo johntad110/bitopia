@@ -5,15 +5,13 @@ import { NextRequest } from "next/server";
 export async function POST(req: NextRequest) {
     const body = await req.json()
     const { tg_id, first_name, last_name, username, language_code, photo_url } = body
-
     if (!tg_id) {
         return new Response(JSON.stringify({ message: 'Unauthorized' }), { status: 401 })
     }
 
-    const user_data = await readData(tg_id)
-
-    if (!user_data) { // Save user in the database...and return
-        try {
+    try {
+        const user_data = await readData(tg_id)
+        if (!user_data) { // Save user in the database...and return
             const u_data: data = {
                 tg_id: tg_id,
                 first_name: first_name,
@@ -35,19 +33,20 @@ export async function POST(req: NextRequest) {
             }), {
                 status: 200
             })
-        } catch (error) {
-            return new Response(JSON.stringify({
-                message: 'Something went wrong.'
-            }), {
-                status: 500
-            })
         }
-    }
 
-    return new Response(JSON.stringify({
-        userData: user_data,
-        message: 'Successful.'
-    }),
-        { status: 200 },
-    );
+        return new Response(JSON.stringify({
+            userData: user_data,
+            message: 'Successful.'
+        }),
+            { status: 200 },
+        );
+    } catch (error) {
+        console.error('Error ', error)
+        return new Response(JSON.stringify({
+            message: 'Something went wrong.'
+        }), {
+            status: 500
+        })
+    }
 }
