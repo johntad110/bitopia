@@ -30,7 +30,9 @@ function WebApp() {
           {/* Top Bar */}
           <div className="w-full p-1 mt-2 flex flex-col justify-between gap-10 border-2 border-white dark:border-gray-500 rounded-xl">
             <div className="flex gap-2 items-center">
-              <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-pink-600 to-yellow-300 dark:bg-slate-200"></div>
+              <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-pink-600 to-yellow-300 dark:bg-slate-200 object-cover">
+                <img src={user?.photo_url} alt="" />
+              </div>
               <div className="">
                 <h1>{user?.first_name}</h1>
                 <div className="h-2 w-20 bg-white dark:bg-gray-600 rounded-full overflow-hidden">
@@ -78,7 +80,7 @@ function WebApp() {
 
           {/* Bottom bar */}
           <button
-            className="w-full h-12 mt-8 bg-gray-200 rounded-2xl dark:bg-gray-100/10 hover:bg-gray-300 dark:hover:dark:bg-gray-600"
+            className="w-full h-12 mt-8 mb-2 bg-gray-200 rounded-2xl dark:bg-gray-100/10 hover:bg-gray-300 dark:hover:dark:bg-gray-600"
             onClick={() => {
               webApp?.openTelegramLink(
                 `https://t.me/share/url?url=http://t.me/bitopia_bot?start=fren=${user?.id}`

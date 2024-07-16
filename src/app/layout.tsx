@@ -5,7 +5,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Bitopia - Tap to Earn",
+  title: "Bitopia - Tap into the Future of Bitcoin",
   description: "A captivating play-to-earn game where users tap to earn digital tokens, promoting the widespread adoption and integration of Bitcoin in a fun and engaging way.",
 };
 
