@@ -46,7 +46,7 @@ export interface IWebApp {
     };
     HapticFeedback: any;
     openTelegramLink: Function;
-    showAlert:	Function;
+    showAlert: Function;
 }
 
 export interface data {
@@ -63,9 +63,17 @@ export interface data {
     rank: number;
 }
 
-export interface Task{
+export interface Task {
     image: string;
     title: string;
     description: string;
     reward: number;
-  }
+}
+
+export interface Friend {
+    name: string;
+    profileUrl?: string;
+    level: number;
+    coins: number;
+    bonusPercentage: number;
+}
