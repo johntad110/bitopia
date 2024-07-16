@@ -36,7 +36,7 @@ export async function creatData(data: data): Promise<void> {
                 return reject(err)
             }
             const serializedData = JSON.stringify(data);
-            connection.query('INSERT INTO biopia (tg_id, data) VALUES (?, ?)', [data.tg_id, serializedData], (err, results) => {
+            connection.query('INSERT INTO bitopia (tg_id, data) VALUES (?, ?)', [data.tg_id, serializedData], (err, results) => {
                 if (err) {
                     return reject(err);
                 }
