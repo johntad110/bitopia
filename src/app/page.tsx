@@ -8,12 +8,13 @@ import { data } from "@/types";
 
 function WebApp() {
   let { user, webApp } = useTelegram();
-  const [points, setPoints] = useState(5000);
+  const [points, setPoints] = useState<number>(0);
   const [taps, setTaps] = useState<any>([]);
   const [isTapped, setIsTapped] = useState(false);
   const [userData, setUserData] = useState<data>();
 
   const fetchUserData = async () => {
+    webApp?.showAlert('Loading your Bitopia points ...');
     const response = await fetch('/api/userData', {
       method: 'POST',
       body: JSON.stringify({
@@ -28,8 +29,9 @@ function WebApp() {
 
     if (response.ok) {
       const data = await response.json()
-      console.log('Fetched user data', data)
+      console.log('Fetched user data', data.userData)
       setUserData(data)
+      setPoints(data.userData.bitopia_points)
     } else {
       const msg = await response.json()
       webApp?.showAlert('Something went wrong. Please reload the page.');
@@ -77,7 +79,7 @@ function WebApp() {
           <div className="w-full flex flex-col items-center justify-center">
             {/* Status */}
             <div className="w-full flex items-center justify-around">
-              <div>Points: {points}</div>
+              <div>Bitopia Points: {points}</div>
               <div className="text-gray-400">Bitopia Frens: --</div>
             </div>
             {/* Coin */}
@@ -120,7 +122,7 @@ function WebApp() {
                 )
               }}
             >
-              Invite Friends
+              Invite a friend
             </button>
             <BottomBar />
           </div>
