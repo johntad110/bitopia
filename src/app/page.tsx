@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 
 function WebApp() {
-  const { user, webApp } = useTelegram();
+  let { user, webApp } = useTelegram();
   const [points, setPoints] = useState(5000);
   const [taps, setTaps] = useState<any>([]);
   const [isTapped, setIsTapped] = useState(false);
@@ -40,6 +40,7 @@ function WebApp() {
                 </div>
               </div>
             </div>
+            {user?.photo_url}
           </div>
 
           <div className="w-full flex flex-col items-center justify-center">
