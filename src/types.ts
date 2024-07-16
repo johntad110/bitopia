@@ -46,4 +46,19 @@ export interface IWebApp {
     };
     HapticFeedback: any;
     openTelegramLink: Function;
+    showAlert:	Function;
+}
+
+export interface data {
+    tg_id: number;
+    first_name: string;
+    last_name: string;
+    username: string;
+    language_code: string;
+    photo_url: string;
+    bitopia_points: number;
+    bitopia_friends: number[];
+    level: number;
+    tasks: number[];
+    rank: number;
 }

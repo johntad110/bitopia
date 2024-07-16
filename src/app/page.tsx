@@ -1,15 +1,41 @@
 'use client'
 import { TelegramProvider, useTelegram } from "@/hooks/TelegramProvider";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import BottomBar from "@/components/bottom_bar";
+import { data } from "@/types";
 
 function WebApp() {
   let { user, webApp } = useTelegram();
   const [points, setPoints] = useState(5000);
   const [taps, setTaps] = useState<any>([]);
   const [isTapped, setIsTapped] = useState(false);
+  const [userData, setUserData] = useState<data>();
+
+  const fetchUserData = async () => {
+    const response = await fetch('/api/userData', {
+      method: 'POST',
+      body: JSON.stringify({
+        tg_id: user?.id,
+        first_name: user?.first_name,
+        last_name: user?.last_name,
+        username: user?.username,
+        language_code: user?.language_code,
+        photo_url: user?.photo_url,
+      })
+    })
+
+    if (response.ok) {
+      const data = await response.json()
+      console.log('Fetched user data', data)
+      setUserData(data)
+    } else {
+      const msg = await response.json()
+      webApp?.showAlert('Something went wrong. Please reload the page.');
+      console.error('Error fetching u_data. ', msg.message);
+    }
+  }
 
   const handleCoinTap = (event: any) => {
     setPoints(points + 1);
@@ -24,6 +50,11 @@ function WebApp() {
     setIsTapped(!isTapped)
   }
 
+  useEffect(() => {
+    fetchUserData()
+  }, [])
+
+
   return (
     <div>
       {user ? (
@@ -35,7 +66,7 @@ function WebApp() {
                 <img src={user?.photo_url} alt="" />
               </div>
               <div className="">
-                <h1>{user?.first_name}</h1>
+                <h1>{user?.first_name} (#{user?.id})</h1>
                 <div className="h-2 w-20 bg-white dark:bg-gray-600 rounded-full overflow-hidden">
                   <div className="h-2 w-10 bg-green-500"></div>
                 </div>
