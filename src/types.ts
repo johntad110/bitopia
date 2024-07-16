@@ -62,3 +62,10 @@ export interface data {
     tasks: number[];
     rank: number;
 }
+
+export interface Task{
+    image: string;
+    title: string;
+    description: string;
+    reward: number;
+  }
