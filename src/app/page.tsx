@@ -3,6 +3,7 @@ import { TelegramProvider, useTelegram } from "@/hooks/TelegramProvider";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import BottomBar from "@/components/bottom_bar";
 
 function WebApp() {
   let { user, webApp } = useTelegram();
@@ -40,7 +41,6 @@ function WebApp() {
                 </div>
               </div>
             </div>
-            {user?.photo_url}
           </div>
 
           <div className="w-full flex flex-col items-center justify-center">
@@ -80,16 +80,19 @@ function WebApp() {
           </AnimatePresence>
 
           {/* Bottom bar */}
-          <button
-            className="w-full h-12 mt-8 mb-2 bg-gray-200 rounded-2xl dark:bg-gray-100/10 hover:bg-gray-300 dark:hover:dark:bg-gray-600"
-            onClick={() => {
-              webApp?.openTelegramLink(
-                `https://t.me/share/url?url=http://t.me/bitopia_bot?start=fren=${user?.id}`
-              )
-            }}
-          >
-            Invite Friends
-          </button>
+          <div className="w-full">
+            <button
+              className="w-full h-12 mt-8 mb-2 bg-gray-200 rounded-2xl dark:bg-gray-100/10 hover:bg-gray-300 dark:hover:dark:bg-gray-600"
+              onClick={() => {
+                webApp?.openTelegramLink(
+                  `https://t.me/share/url?url=http://t.me/bitopia_bot?start=fren=${user?.id}`
+                )
+              }}
+            >
+              Invite Friends
+            </button>
+            <BottomBar />
+          </div>
         </main>
       ) : (
         <main className="flex min-h-screen flex-col items-center justify-between p-24">
