@@ -12,6 +12,7 @@ function WebApp() {
   const [taps, setTaps] = useState<any>([]);
   const [isTapped, setIsTapped] = useState(false);
   const [userData, setUserData] = useState<data>();
+  const [remainingEnergy, setRemainingEnergy] = useState<number>(500);
 
   const fetchUserData = async () => {
     webApp?.showAlert('Loading your Bitopia points ...');
@@ -34,13 +35,14 @@ function WebApp() {
       setPoints(data.userData.bitopia_points)
     } else {
       const msg = await response.json()
-      webApp?.showAlert('Something went wrong. Please reload the page.');
       console.error('Error fetching u_data. ', msg.message);
+      webApp?.showAlert('Something went wrong. Please reload the page.');
     }
   }
 
   const handleCoinTap = (event: any) => {
     setPoints(points + 1);
+    setRemainingEnergy((prevPoint) => prevPoint - 1)
 
     const newTap = {
       id: Date.now(),
@@ -114,6 +116,13 @@ function WebApp() {
 
           {/* Bottom bar */}
           <div className="w-full">
+            Remaining Energy: {remainingEnergy} ({}%)
+            <div className="w-full h-4 bg-gray-800 rounded-full">
+              <div 
+              className={`h-full bg-green-400 rounded-full`}
+              style={{ width: `${remainingEnergy / 500 * 100}%` }}
+              ></div>
+            </div>
             <button
               className="w-full h-12 mt-8 mb-2 bg-gray-200 rounded-2xl dark:bg-gray-100/10 hover:bg-gray-300 dark:hover:dark:bg-gray-600"
               onClick={() => {
