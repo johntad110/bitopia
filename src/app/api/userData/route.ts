@@ -14,11 +14,11 @@ export async function POST(req: NextRequest) {
         if (!user_data) { // Save user in the database...and return
             const u_data: data = {
                 tg_id: tg_id,
-                first_name: first_name,
-                last_name: last_name,
-                username: username,
-                language_code: language_code,
-                photo_url: photo_url,
+                first_name: first_name || 'unknown',
+                last_name: last_name || 'unknown',
+                username: username || 'unknown',
+                language_code: language_code || 'unknown',
+                photo_url: photo_url || 'unknown',
                 bitopia_points: 0,
                 bitopia_friends: [],
                 level: 0,
