@@ -42,7 +42,7 @@ const tasks: Task[] = [
 export default function TaskPage() {
     return (
         <div className="flex flex-col">
-            <div className="h-full w-full flex flex-wrap gap-4 justify-center items-center p-4">
+            <div className="h-full w-full flex flex-wrap gap-2 justify-center items-start p-4 mb-20">
                 {tasks.map((task) => (
                     <TaskCard key={task.title} task={task} />
                 ))}
@@ -56,7 +56,7 @@ export default function TaskPage() {
 
 const TaskCard = ({ task }: { task: Task }) => {
     return (
-        <div className="flex flex-col bg-gray-600/50 rounded-lg p-4 shadow-md w-48">
+        <div className="flex flex-col bg-gray-600/50 rounded-lg p-4 shadow-md w-full">
             <img src={task.image} alt={task.title} className="w-full self-center mb-2 rounded-lg" />
             <h3 className="text-md font-semibold">{task.title}</h3>
             <p className="text-gray-600 mb-2 text-xs">{task.description}</p>
