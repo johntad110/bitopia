@@ -20,7 +20,7 @@ export default function Friends() {
     return (
         <div className="flex flex-col">
             <h1 className="text-center p-2 pt-4 bg-slate-800 text-xs">When your friend is more active you get more bonus</h1>
-            <div className="h-full w-full flex flex-wrap gap-4 justify-center items-center p-4 mb-0">
+            <div className="h-full w-full flex flex-wrap gap-4 justify-center items-center p-4 mb-20">
                 {friendsData.slice(0, 12).map((friend) => (
                     <FriendCard key={friend.name} friend={friend} />
                 ))}
@@ -38,7 +38,7 @@ const FriendCard = ({ friend }: { friend: Friend }) => {
         : { background: `linear-gradient(to right, #${Math.floor(Math.random() * 16777215).toString(16)}, #${Math.floor(Math.random() * 16777215).toString(16)})` };
 
     return (
-        <div className="flex flex-col bg-white rounded-lg px-4 py-2 shadow-md w-64">
+        <div className="flex flex-col bg-transparent rounded-xl border border-gray-600 px-4 py-2 shadow-2xl shadow-purple-500/30 w-full">
             <div className="flex justify-between items-center">
                 <div className="relative overflow-hidden rounded-full w-16 h-16" style={profileStyle}>
                 {/* Show initials if no profile picture */}
@@ -48,14 +48,14 @@ const FriendCard = ({ friend }: { friend: Friend }) => {
                     </span>
                 )}
             </div>
-            <h3 className="text-lg font-semibold text-center text-black">{friend.name}</h3></div>
+            <h3 className="text-lg font-semibold text-center text-white">{friend.name}</h3></div>
             <div className="flex justify-between items-center mb-2">
-                <span className="text-gray-600">Level: {friend.level}</span>
-                <span className="text-green-500 font-bold">
+                <span className="text-gray-300">Level: {friend.level}</span>
+                <span className="text-green-400 font-bold">
                     {friend.coins} Coins
                 </span>
             </div>
-            <div className="text-gray-600 text-sm">
+            <div className="text-gray-400 text-sm">
                 Your Bonus: {friend.bonusPercentage}% ({friend.bonusPercentage * 10} Coins)
             </div>
         </div>
