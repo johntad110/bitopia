@@ -4,34 +4,34 @@ import { Task } from "@/types";
 
 const tasks: Task[] = [
     {
-        image: "/images/task_checkin.png", // Replace with your image path
+        image: "/images/task_checkin.png",  
         title: "Daily Check-In",
         description: "Earn rewards by checking in daily. Consistency is key!",
         reward: 50,
     },
     {
-        image: "/images/task_quiz.png", // Replace with your image path
+        image: "/images/task_quiz.png",  
         title: "Complete a Quiz",
         description:
             "Test your knowledge about Bitcoin and cryptocurrencies. Complete the quiz and earn rewards.",
         reward: 100,
     },
     {
-        image: "/images/task_invite.png", // Replace with your image path
+        image: "/images/task_invite.png",  
         title: "Invite a Friend",
         description:
             "Invite a friend to join Bitopia. Earn rewards for each successful referral.",
         reward: 200,
     },
     {
-        image: "/images/task_transaction.png", // Replace with your image path
+        image: "/images/task_transaction.png",  
         title: "Transaction Challenge",
         description:
             "Make a Bitcoin transaction using Bitopia. It can be as simple as sending a small amount to another user.",
         reward: 150,
     },
     {
-        image: "/images/task_game.png", // Replace with your image path
+        image: "/images/task_game.png",  
         title: "Complete a Game Level",
         description:
             "Reach a certain level in the tap-to-earn game within Bitopia. Levels increase in difficulty, offering bigger rewards.",
