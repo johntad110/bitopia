@@ -41,17 +41,19 @@ function WebApp() {
   }
 
   const handleCoinTap = (event: any) => {
-    setPoints(points + 1);
-    setRemainingEnergy((prevPoint) => prevPoint - 1)
+    if (remainingEnergy > 0) {
+      setPoints(points + 1);
+      setRemainingEnergy((prevPoint) => prevPoint - 1)
 
-    const newTap = {
-      id: Date.now(),
-      x: event.clientX,
-      y: event.clientY,
-    };
+      const newTap = {
+        id: Date.now(),
+        x: event.clientX,
+        y: event.clientY,
+      };
 
-    setTaps([...taps, newTap])
-    setIsTapped(!isTapped)
+      setTaps([...taps, newTap])
+      setIsTapped(!isTapped)
+    }
   }
 
   useEffect(() => {
@@ -69,10 +71,16 @@ function WebApp() {
               <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-pink-600 to-yellow-300 dark:bg-slate-200 object-cover">
                 <img src={user?.photo_url} alt="" />
               </div>
-              <div className="">
+              <div className="w-full">
                 <h1>{user?.first_name} (#{user?.id})</h1>
-                <div className="h-2 w-20 bg-white dark:bg-gray-600 rounded-full overflow-hidden">
-                  <div className="h-2 w-10 bg-green-500"></div>
+                <div className="w-full flex items-center justify-between">
+                  <div className="h-2 w-20 bg-white dark:bg-gray-300 rounded-full overflow-hidden">
+                    <div
+                      className={`h-2 bg-green-500`}
+                      style={{ width: `${100 - (remainingEnergy / 500 * 100)}%` }}
+                    ></div>
+                  </div>
+                  <h1 className="text-[12px]">Level {userData?.level || 0} ({500 - points} points to level up)</h1>
                 </div>
               </div>
             </div>
@@ -82,7 +90,7 @@ function WebApp() {
             {/* Status */}
             <div className="w-full flex items-center justify-around">
               <div>Bitopia Points: {points}</div>
-              <div className="text-gray-400">Bitopia Frens: --</div>
+              <div className="text-white border  px-1 rounded-lg">Bitopia Frens: 20</div>
             </div>
             {/* Coin */}
             <div
@@ -116,11 +124,11 @@ function WebApp() {
 
           {/* Bottom bar */}
           <div className="w-full">
-            Remaining Energy: {remainingEnergy} ({}%)
-            <div className="w-full h-4 bg-gray-800 rounded-full">
-              <div 
-              className={`h-full bg-green-400 rounded-full`}
-              style={{ width: `${remainingEnergy / 500 * 100}%` }}
+            <p className="text-xs">Remaining Energy: {remainingEnergy} ({(remainingEnergy / 500) * 100}%)</p>
+            <div className="w-full h-4 bg-violet-600 rounded-full">
+              <div
+                className={`h-full bg-gradient-to-r from-green-300 bg-green-600 rounded-full`}
+                style={{ width: `${remainingEnergy / 500 * 100}%` }}
               ></div>
             </div>
             <button
