@@ -13,15 +13,6 @@ export default function Home() {
   const [isTapped, setIsTapped] = useState(false);
   const [remainingEnergy, setRemainingEnergy] = useState<number>(500);
 
-  user = {
-    id: 12,
-    first_name: 'string',
-    last_name: 'string',
-    username: 'string',
-    language_code: 'string',
-    photo_url: 'string',
-  }
-
   useEffect(() => {
     const storedPoints = localStorage.getItem('points');
     const storedEnergy = localStorage.getItem('remainingEnergy');
