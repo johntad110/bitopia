@@ -84,7 +84,7 @@ export const TelegramProvider = ({
                 bitopiaData,
             }
             : {};
-    }, [webApp]);
+    }, [webApp, bitopiaData]);
 
     return (
         <TelegramContext.Provider value={value}>
