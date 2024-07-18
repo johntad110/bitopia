@@ -1,49 +1,74 @@
 'use client'
-import { TelegramProvider, useTelegram } from "@/hooks/TelegramProvider";
-import { useEffect, useState } from "react";
+import { useTelegram } from "@/hooks/TelegramProvider";
+import { useEffect, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
-import BottomBar from "@/components/bottom_bar";
-import { data } from "@/types";
+import { debounce } from 'lodash';
+import NoUser from "@/components/no_user";
 
-function WebApp() {
-  let { user, webApp } = useTelegram();
+
+export default function Home() {
+  let { user, webApp, bitopiaData } = useTelegram();
   const [points, setPoints] = useState<number>(0);
   const [taps, setTaps] = useState<any>([]);
   const [isTapped, setIsTapped] = useState(false);
-  const [userData, setUserData] = useState<data>();
   const [remainingEnergy, setRemainingEnergy] = useState<number>(500);
 
-  const fetchUserData = async () => {
-    webApp?.showAlert('Loading your Bitopia points ...');
-    const response = await fetch('/api/userData', {
-      method: 'POST',
-      body: JSON.stringify({
-        tg_id: user?.id,
-        first_name: user?.first_name,
-        last_name: user?.last_name,
-        username: user?.username,
-        language_code: user?.language_code,
-        photo_url: user?.photo_url,
-      })
-    })
-
-    if (response.ok) {
-      const data = await response.json()
-      console.log('Fetched user data', data.userData)
-      setUserData(data)
-      setPoints(data.userData.bitopia_points)
-    } else {
-      const msg = await response.json()
-      console.error('Error fetching u_data. ', msg.message);
-      webApp?.showAlert('Something went wrong. Please reload the page.');
-    }
+  user = {
+    id: 12,
+    first_name: 'string',
+    last_name: 'string',
+    username: 'string',
+    language_code: 'string',
+    photo_url: 'string',
   }
+
+  useEffect(() => {
+    const storedPoints = localStorage.getItem('points');
+    const storedEnergy = localStorage.getItem('remainingEnergy');
+
+    if (storedPoints) setPoints(Number(storedPoints));
+    if (storedEnergy) setRemainingEnergy(Number(storedEnergy))
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem('points', points.toString());
+    localStorage.setItem('remainingEnergy', remainingEnergy.toString());
+  }, [points, remainingEnergy]);
+
+  const syncDataWithServer = async (points: number, remainingEnergy: number) => {
+    try {
+      const response = await fetch('/api/syncData', {
+        method: 'POST',
+        body: JSON.stringify({ tg_id: user.id, points, remainingEnergy }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Failed to sync data with server...');
+      }
+    } catch (error) {
+      console.error('Error syncing data:', error)
+      webApp?.showAlert('Error syncing data.');
+    }
+  };
+
+  const debouncedSyncData = useCallback(debounce(syncDataWithServer, 5000), [])
 
   const handleCoinTap = (event: any) => {
     if (remainingEnergy > 0) {
-      setPoints(points + 1);
+      setPoints((prevPoints) => {
+        const newPoints = prevPoints + 1;
+        debouncedSyncData(newPoints, remainingEnergy - 1);
+        if (bitopiaData) {
+          bitopiaData.bitopia_points = newPoints;
+          bitopiaData.remaining_energy = remainingEnergy - 1;
+        }
+
+        return newPoints;
+      });
       setRemainingEnergy((prevPoint) => prevPoint - 1)
+
 
       const newTap = {
         id: Date.now(),
@@ -51,46 +76,20 @@ function WebApp() {
         y: event.clientY,
       };
 
-      setTaps([...taps, newTap])
-      setIsTapped(!isTapped)
+      setTaps((prevTaps: any) => [...prevTaps, newTap])
+      setIsTapped((prevIsTapped) => !prevIsTapped)
     }
   }
-
-  useEffect(() => {
-    fetchUserData()
-  }, [user])
-
 
   return (
     <div>
       {user ? (
         <main className=" min-h-screen flex flex-col items-center justify-between p-2">
-          {/* Top Bar */}
-          <div className="w-full p-1 mt-2 flex flex-col justify-between gap-10 border-2 border-white dark:border-gray-500 rounded-xl">
-            <div className="flex gap-2 items-center">
-              <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-pink-600 to-yellow-300 dark:bg-slate-200 object-cover">
-                <img src={user?.photo_url} alt="" />
-              </div>
-              <div className="w-full">
-                <h1>{user?.first_name} (#{user?.id})</h1>
-                <div className="w-full flex items-center justify-between">
-                  <div className="h-2 w-20 bg-white dark:bg-gray-300 rounded-full overflow-hidden">
-                    <div
-                      className={`h-2 bg-green-500`}
-                      style={{ width: `${100 - (remainingEnergy / 500 * 100)}%` }}
-                    ></div>
-                  </div>
-                  <h1 className="text-[12px]">Level {userData?.level || 0} ({500 - points} points to level up)</h1>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="w-full flex flex-col items-center justify-center">
+          <div className="w-full flex flex-col items-center justify-center mt-20">
             {/* Status */}
             <div className="w-full flex items-center justify-around">
-              <div>Bitopia Points: {points}</div>
-              <div className="text-white border  px-1 rounded-lg">Bitopia Frens: 20</div>
+              <div>Bitopia Points: {bitopiaData?.bitopia_points || '--'}</div>
+              <div className="text-white border  px-1 rounded-lg">Bitopia Frens: {bitopiaData ? bitopiaData.bitopia_friends.length : '/...|'}</div>
             </div>
             {/* Coin */}
             <div
@@ -132,7 +131,7 @@ function WebApp() {
               ></div>
             </div>
             <button
-              className="w-full h-12 mt-8 mb-2 bg-gray-200 rounded-2xl dark:bg-gray-100/10 hover:bg-gray-300 dark:hover:dark:bg-gray-600"
+              className="w-full h-12 mt-8 mb-20 bg-gray-200 rounded-2xl dark:bg-gray-100/10 hover:bg-gray-300 dark:hover:dark:bg-gray-600"
               onClick={() => {
                 webApp?.openTelegramLink(
                   `https://t.me/share/url?url=http://t.me/bitopia_bot?start=fren=${user?.id}`
@@ -141,74 +140,11 @@ function WebApp() {
             >
               Invite a friend
             </button>
-            <BottomBar />
           </div>
         </main>
       ) : (
-        <main className="flex min-h-screen flex-col items-center justify-between p-24">
-          <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-            <p className="fixed left-0 top-0 flex w-full justify-center items-center border-b border-gray-100 bg-gradient-to-b from-pink-400 pb-6 pt-8 backdrop-blur-2xl dark:border-gray-600 dark:bg-gradient-to-br dark:from-pink-100/30 lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-              Make sure to open using a <a href="https://t.me/bitopia_bot" className="m-1 px-2 underline underline-offset-4 text-blue-600 hover:underline-offset-2">Telegram</a> client.
-            </p>
-            <div className="fixed bottom-2 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-              <a
-                className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-                href="https://t.me/bitopia_bot"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                By{" "}
-                <Image
-                  src="/bitopia-logo-white-transparent.png"
-                  alt="Bit Logo"
-                  className="invert dark:invert-0"
-                  width={100}
-                  height={24}
-                  priority
-                />
-              </a>
-            </div>
-          </div>
-
-          <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-            <Image
-              className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] invert dark:invert-0 hover:shadow-xl"
-              src="/bitopia-logo-white-transparent.png"
-              alt="Bitopia Logo"
-              width={180}
-              height={40}
-              priority
-            />
-          </div>
-
-          <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-            <a
-              href="https://t.me/bitopia_bot"
-              className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <h2 className="mb-3 text-2xl font-semibold">
-                Learn{" "}
-                <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-                  ------&gt;
-                </span>
-              </h2>
-              <p className="m-0 max-w-[30ch] text-sm opacity-50">
-                Learn about us!
-              </p>
-            </a>
-          </div>
-        </main>
+        <NoUser />
       )}
     </div>
   );
-}
-
-export default function Home() {
-  return (
-    <TelegramProvider>
-      <WebApp />
-    </TelegramProvider>
-  )
 }

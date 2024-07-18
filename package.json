@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "@twa-dev/sdk": "^7.0.0",
+    "@types/lodash.debounce": "^4.0.9",
     "framer-motion": "^11.3.2",
+    "lodash": "^4.17.21",
     "mysql2": "^3.10.3",
     "next": "14.2.5",
     "react": "^18",

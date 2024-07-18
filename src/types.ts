@@ -61,6 +61,7 @@ export interface data {
     level: number;
     tasks: number[];
     rank: number;
+    remaining_energy?: number;
 }
 
 export interface Task {

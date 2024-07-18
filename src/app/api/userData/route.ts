@@ -11,6 +11,7 @@ export async function POST(req: NextRequest) {
 
     try {
         const user_data = await readData(tg_id)
+
         if (!user_data) { // Save user in the database...and return
             const u_data: data = {
                 tg_id: tg_id,
@@ -24,9 +25,10 @@ export async function POST(req: NextRequest) {
                 level: 0,
                 tasks: [],
                 rank: 0,
-
+                remaining_energy: 500,
             }
             await creatData(u_data);
+            console.log('Created user...')
             return new Response(JSON.stringify({
                 userData: u_data,
                 message: 'Successful.'
@@ -34,7 +36,7 @@ export async function POST(req: NextRequest) {
                 status: 200
             })
         }
-
+        console.log('Got user...')
         return new Response(JSON.stringify({
             userData: user_data,
             message: 'Successful.'

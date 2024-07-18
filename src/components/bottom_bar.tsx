@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function BottomBar() {
     return (
-        <div className="w-full mb-2 bg-gray-200 rounded-2xl dark:bg-gray-100/10 flex justify-around items-center gap-1 text-xl backdrop-blur-lg">
+        <div className="w-full mb-2 bg-gray-200 rounded-2xl dark:bg-gray-100/10 flex justify-around items-center gap-1 text-xl backdrop-blur-sm">
             <Link
                 href="/"
                 className="bottom-bar-icons"

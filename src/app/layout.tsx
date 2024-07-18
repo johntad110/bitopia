@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Sora } from "next/font/google";
 import "./globals.css";
+import BottomBar from "@/components/bottom_bar";
+import { TelegramProvider } from "@/hooks/TelegramProvider";
+import { Status } from "@/components/Status";
 
 const inter = Sora({ subsets: ["latin"] });
 
@@ -32,7 +35,15 @@ export default function RootLayout({
         <link rel="apple-touch-icon" sizes="180x180" href="/favicon/favicon-180x180.png" />
       </head>
       <body className={inter.className}>
-        {children}
+        <TelegramProvider>
+          <div className="fixed top-0 w-full z-50">
+            <Status />
+          </div>
+          {children}
+          <div className="fixed bottom-0 w-full">
+            <BottomBar />
+          </div>
+        </TelegramProvider>
       </body>
     </html>
   );

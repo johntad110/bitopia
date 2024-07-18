@@ -18,15 +18,12 @@ const friendsData: Friend[] = [
 
 export default function Friends() {
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col mt-20">
             <h1 className="text-center p-2 pt-4 bg-slate-800 text-xs">When your friend is more active you get more bonus</h1>
             <div className="h-full w-full flex flex-wrap gap-4 justify-center items-center p-4 mb-20">
                 {friendsData.slice(0, 12).map((friend) => (
                     <FriendCard key={friend.name} friend={friend} />
                 ))}
-            </div>
-            <div className="fixed bottom-0">
-                <BottomBar />
             </div>
         </div>
     );

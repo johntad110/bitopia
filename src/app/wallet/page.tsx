@@ -2,7 +2,7 @@ import BottomBar from "@/components/bottom_bar";
 
 export default function Wallet() {
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col mt-20">
             <div className="flex justify-between items-center px-4 py-6 shadow-md">
                 <h1 className="text-xl font-semibold">My Bitopia Wallet</h1>
                 <img
@@ -35,9 +35,6 @@ export default function Wallet() {
                 <p className="text-gray-500 text-sm">
                     &copy; Bitopia Inc. All rights reserved.
                 </p>
-            </div>
-            <div className="fixed bottom-0">
-                <BottomBar />
             </div>
         </div>
     );

@@ -27,15 +27,12 @@ export default function Leaderboard() {
 
 
     return (
-        <div >
+        <div className="mt-20">
             <div className="text-center p-2 pt-4 bg-slate-800 text-xs">See how you rank against other top earners</div>
             <div className="flex flex-col justify-center items-center gap-4 px-4 py-8 mb-20 bg-gradient-to-br from-gray-800 to-gray-900">
                 {leaderboardData.map((user) => (
                     <LeaderboardCard key={user.name} user={user} />
                 ))}
-            </div>
-            <div className="fixed bottom-0">
-                <BottomBar />
             </div>
         </div>
     );
