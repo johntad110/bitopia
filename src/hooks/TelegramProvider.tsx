@@ -40,7 +40,6 @@ export const TelegramProvider = ({
         const fetchUserData = async () => {
             if (webApp?.initDataUnsafe.user) {
                 const user = webApp.initDataUnsafe.user;
-                webApp?.showAlert('Loading your Bitopia points ...');
                 const response = await fetch('/api/userData', {
                     method: 'POST',
                     body: JSON.stringify({
@@ -53,6 +52,7 @@ export const TelegramProvider = ({
                     })
                 })
                 if (response.ok) {
+                    webApp?.showAlert('Loaded sucessfully');
                     const data = await response.json();
                     const u_data = data.userData
                     setBitopiaData({

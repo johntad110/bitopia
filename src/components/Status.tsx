@@ -16,7 +16,7 @@ export function Status() {
                         <div className="h-2 w-20 bg-white dark:bg-gray-300 rounded-full overflow-hidden">
                             <div
                                 className={`h-2 bg-green-500`}
-                                style={{ width: `${bitopiaData ? 100 - (bitopiaData.remaining_energy / 500 * 100) : 0}%` }}
+                                style={{ width: `${bitopiaData ? (100 - (bitopiaData.remaining_energy / 500 * 100)) : 0}%` }}
                             ></div>
                         </div>
                         <h1 className="text-[12px]">Level {bitopiaData?.level || '---'} ({bitopiaData ? 500 - bitopiaData.bitopia_points : '---'} points to level up)</h1>
