@@ -30,7 +30,7 @@ export default function Home() {
     try {
       const response = await fetch('/api/syncData', {
         method: 'POST',
-        body: JSON.stringify({ tg_id: user.id, points, remainingEnergy }),
+        body: JSON.stringify({ tg_id: user?.id, points, remainingEnergy }),
         headers: {
           'Content-Type': 'application/json',
         },
