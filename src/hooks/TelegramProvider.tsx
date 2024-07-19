@@ -16,6 +16,8 @@ export interface ITelegramContext {
     webApp?: IWebApp;
     user?: ITelegramUser;
     bitopiaData?: IBitopiaData | null;
+    // setBitopiaData?: React.Dispatch<React.SetStateAction<IBitopiaData | null>>;
+    setBitopiaData?: any;
 }
 
 export const TelegramContext = createContext<ITelegramContext>({});
@@ -82,6 +84,7 @@ export const TelegramProvider = ({
                 unsafeData: webApp.initDataUnsafe,
                 user: webApp.initDataUnsafe.user,
                 bitopiaData,
+                setBitopiaData,
             }
             : {};
     }, [webApp, bitopiaData]);

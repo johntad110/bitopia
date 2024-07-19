@@ -7,7 +7,7 @@ import NoUser from "@/components/no_user";
 
 
 export default function Home() {
-  let { user, webApp, bitopiaData } = useTelegram();
+  let { user, webApp, bitopiaData, setBitopiaData } = useTelegram();
   const [points, setPoints] = useState<number>(0);
   const [taps, setTaps] = useState<any>([]);
   const [isTapped, setIsTapped] = useState(false);
@@ -24,11 +24,6 @@ export default function Home() {
   useEffect(() => {
     localStorage.setItem('points', points.toString());
     localStorage.setItem('remainingEnergy', remainingEnergy.toString());
-
-    if (bitopiaData) {
-      bitopiaData.bitopia_points = points;
-      bitopiaData.remaining_energy = remainingEnergy;
-    }
   }, [points, remainingEnergy]);
 
   const syncDataWithServer = async (points: number, remainingEnergy: number) => {
@@ -56,9 +51,13 @@ export default function Home() {
       setPoints((prevPoints) => {
         const newPoints = prevPoints + 1;
         debouncedSyncData(newPoints, remainingEnergy - 1);
-        if (bitopiaData) {
-          bitopiaData.bitopia_points = newPoints;
-          bitopiaData.remaining_energy = remainingEnergy - 1;
+        
+        if (setBitopiaData) {
+          setBitopiaData({
+            ...bitopiaData,
+            bitopia_points: newPoints,
+            remaining_energy: remainingEnergy - 1,
+          })
         }
 
         return newPoints;
