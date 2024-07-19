@@ -24,6 +24,11 @@ export default function Home() {
   useEffect(() => {
     localStorage.setItem('points', points.toString());
     localStorage.setItem('remainingEnergy', remainingEnergy.toString());
+
+    if (bitopiaData) {
+      bitopiaData.bitopia_points = points;
+      bitopiaData.remaining_energy = remainingEnergy;
+    }
   }, [points, remainingEnergy]);
 
   const syncDataWithServer = async (points: number, remainingEnergy: number) => {
