@@ -26,6 +26,22 @@ export default function Home() {
     localStorage.setItem('remainingEnergy', remainingEnergy.toString());
   }, [points, remainingEnergy]);
 
+  useEffect(() => {
+    if (bitopiaData && bitopiaData.remaining_energy < 500) {
+      const intervalId = setInterval(() => {
+        setBitopiaData((prevData: any) => {
+          if (prevData && prevData.remaining_energy < 500) {
+            return { ...prevData, remaining_energy: prevData.remaining_energy + 1 };
+          } else {
+            clearInterval(intervalId);
+            return prevData;
+          }
+        });
+      }, (5 * 60 * 1000) / 500);  // 5 minutes to refill to 500
+      return () => clearInterval(intervalId);
+    }
+  }, [bitopiaData?.remaining_energy]);
+
   const syncDataWithServer = async (points: number, remainingEnergy: number) => {
     try {
       const response = await fetch('/api/syncData', {
@@ -51,7 +67,7 @@ export default function Home() {
       setPoints((prevPoints) => {
         const newPoints = prevPoints + 1;
         debouncedSyncData(newPoints, remainingEnergy - 1);
-        
+
         if (setBitopiaData) {
           setBitopiaData({
             ...bitopiaData,

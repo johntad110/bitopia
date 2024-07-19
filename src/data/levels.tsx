@@ -2,11 +2,14 @@ export const levels = [
     {
         level: 0,
         photo_url: '/images/levels/level_0.png',
-        min_points: 0
+        min_points: 0,
+        energy: 500,
     },
     {
         level: 1,
         photo_url: '/images/levels/level_1.png',
-        min_points: 500
+        min_points: 500,
+        energy: 1000,
+        tap: 3,
     }
 ]
