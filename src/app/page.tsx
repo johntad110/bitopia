@@ -37,6 +37,7 @@ export default function Home() {
             return prevData;
           }
         });
+        setRemainingEnergy((prevPoint) => prevPoint - 1)
       }, (5 * 60 * 1000) / 500);  // 5 minutes to refill to 500
       return () => clearInterval(intervalId);
     }
