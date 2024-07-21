@@ -21,6 +21,7 @@ export async function POST(req: NextRequest) {
             await updateData(newUserData)
             return new Response(JSON.stringify({ message: 'Successfully updated data' }), { status: 201 })
         } else {
+            console.log('No user data: ', tg_id);
             return new Response(JSON.stringify({ message: 'Unauthorized' }), { status: 401 })
         }
     } catch (error) {
